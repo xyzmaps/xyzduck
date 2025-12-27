@@ -61,22 +61,43 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.25.5"
-
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: dist
-          merge-multiple: true
+          path: dist-artifacts
 
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+      - name: Prepare release archives
+        run: |
+          mkdir -p release
+          cd dist-artifacts
+          for dir in */; do
+            artifact_name="${dir%/}"
+            cd "$dir"
+            # Create tar.gz for each platform
+            for file in *; do
+              if [ -f "$file" ]; then
+                # Extract OS and arch from artifact name (xyzduck-linux-amd64 -> linux_amd64)
+                platform_name=$(echo "$artifact_name" | sed 's/xyzduck-//' | sed 's/-/_/')
+                tar czf "../../release/xyzduck_${platform_name}.tar.gz" "$file"
+              fi
+            done
+            cd ..
+          done
+          cd ..
+          ls -la release/
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          echo "## What's Changed" > CHANGELOG.md
+          git log --oneline --no-merges $(git describe --tags --abbrev=0 HEAD^)..HEAD >> CHANGELOG.md || echo "Initial release" >> CHANGELOG.md
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          distribution: goreleaser
-          version: "~> v2"
-          args: release --skip=build
+          files: release/*
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
