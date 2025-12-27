@@ -22,6 +22,11 @@ builds:
       - linux
       - windows
       - darwin
+    ldflags:
+      - -s -w
+      - -X org.xyzmaps.xyzduck/src/version.Version={{.Version}}
+      - -X org.xyzmaps.xyzduck/src/version.Commit={{.Commit}}
+      - -X org.xyzmaps.xyzduck/src/version.Date={{.Date}}
 
 archives:
   - formats: [tar.gz]
