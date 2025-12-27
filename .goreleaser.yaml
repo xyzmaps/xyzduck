@@ -31,27 +31,28 @@ builds:
       - -X org.xyzmaps.xyzduck/src/version.Version={{.Version}}
       - -X org.xyzmaps.xyzduck/src/version.Commit={{.Commit}}
       - -X org.xyzmaps.xyzduck/src/version.Date={{.Date}}
+      - -extldflags "-static-libgcc -static-libstdc++"
     overrides:
       - goos: linux
         goarch: amd64
         env:
           - CC=zig cc -target x86_64-linux-gnu
-          - CXX=zig c++ -target x86_64-linux-gnu
+          - CXX=zig c++ -target x86_64-linux-gnu -lc++
       - goos: linux
         goarch: arm64
         env:
           - CC=zig cc -target aarch64-linux-gnu
-          - CXX=zig c++ -target aarch64-linux-gnu
+          - CXX=zig c++ -target aarch64-linux-gnu -lc++
       - goos: darwin
         goarch: amd64
         env:
           - CC=zig cc -target x86_64-macos
-          - CXX=zig c++ -target x86_64-macos
+          - CXX=zig c++ -target x86_64-macos -lc++
       - goos: darwin
         goarch: arm64
         env:
           - CC=zig cc -target aarch64-macos
-          - CXX=zig c++ -target aarch64-macos
+          - CXX=zig c++ -target aarch64-macos -lc++
 
 archives:
   - formats: [tar.gz]
