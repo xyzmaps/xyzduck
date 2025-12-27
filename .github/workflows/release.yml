@@ -69,21 +69,28 @@ jobs:
       - name: Prepare release archives
         run: |
           mkdir -p release
+          echo "Listing dist-artifacts structure:"
+          find dist-artifacts -type f
           cd dist-artifacts
           for dir in */; do
             artifact_name="${dir%/}"
+            echo "Processing artifact: $artifact_name"
             cd "$dir"
-            # Create tar.gz for each platform
-            for file in *; do
-              if [ -f "$file" ]; then
-                # Extract OS and arch from artifact name (xyzduck-linux-amd64 -> linux_amd64)
-                platform_name=$(echo "$artifact_name" | sed 's/xyzduck-//' | sed 's/-/_/')
-                tar czf "../../release/xyzduck_${platform_name}.tar.gz" "$file"
-              fi
-            done
+            # Find the actual binary (GoReleaser creates nested directories)
+            binary=$(find . -type f -name "xyzduck" -o -name "xyzduck.exe" | head -1)
+            if [ -n "$binary" ]; then
+              # Extract OS and arch from artifact name (xyzduck-linux-amd64 -> linux_amd64)
+              platform_name=$(echo "$artifact_name" | sed 's/xyzduck-//' | sed 's/-/_/')
+              echo "Creating archive for $platform_name with binary $binary"
+              tar czf "../../release/xyzduck_${platform_name}.tar.gz" "$binary"
+            else
+              echo "Warning: No binary found in $artifact_name"
+              ls -la
+            fi
             cd ..
           done
           cd ..
+          echo "Final release directory:"
           ls -la release/
 
       - name: Generate changelog
