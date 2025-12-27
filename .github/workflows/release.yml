@@ -40,7 +40,7 @@ jobs:
         with:
           distribution: goreleaser
           version: "~> v2"
-          args: build --single-target --snapshot
+          args: build --single-target
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
