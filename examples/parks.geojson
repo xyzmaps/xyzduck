@@ -1,0 +1,62 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-122.5155, 37.7707],
+          [-122.5155, 37.7832],
+          [-122.4545, 37.7832],
+          [-122.4545, 37.7707],
+          [-122.5155, 37.7707]
+        ]]
+      },
+      "properties": {
+        "name": "Golden Gate Park",
+        "area_acres": 1017,
+        "city": "San Francisco",
+        "type": "Urban Park"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.9812, 40.7685],
+          [-73.9812, 40.8000],
+          [-73.9489, 40.8000],
+          [-73.9489, 40.7685],
+          [-73.9812, 40.7685]
+        ]]
+      },
+      "properties": {
+        "name": "Central Park",
+        "area_acres": 843,
+        "city": "New York",
+        "type": "Urban Park"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.2241, 48.8631],
+          [2.2241, 48.8753],
+          [2.2700, 48.8753],
+          [2.2700, 48.8631],
+          [2.2241, 48.8631]
+        ]]
+      },
+      "properties": {
+        "name": "Bois de Boulogne",
+        "area_acres": 2090,
+        "city": "Paris",
+        "type": "Urban Park"
+      }
+    }
+  ]
+}

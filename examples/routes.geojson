@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.4194, 37.7749],
+          [-122.2711, 37.8044],
+          [-122.0822, 37.4220]
+        ]
+      },
+      "properties": {
+        "name": "SF to San Jose",
+        "distance_km": 77,
+        "mode": "highway",
+        "route_number": "US-101"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.9352, 40.7306],
+          [-74.0060, 40.7128],
+          [-74.0776, 40.6043]
+        ]
+      },
+      "properties": {
+        "name": "Brooklyn to Staten Island",
+        "distance_km": 25,
+        "mode": "highway",
+        "route_number": "I-278"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [2.3522, 48.8566],
+          [2.2945, 48.8738],
+          [2.2137, 48.8973]
+        ]
+      },
+      "properties": {
+        "name": "Paris to La Défense",
+        "distance_km": 8,
+        "mode": "metro",
+        "route_number": "Line 1"
+      }
+    }
+  ]
+}

@@ -76,3 +76,77 @@ func InitSpatialExtension(filename string) error {
 
 	return nil
 }
+
+// Column represents a database table column
+type Column struct {
+	Name string
+	Type string
+}
+
+// TableExists checks if a table exists in the database
+func TableExists(dbPath, tableName string) (bool, error) {
+	absPath, err := filepath.Abs(dbPath)
+	if err != nil {
+		return false, fmt.Errorf("failed to resolve absolute path: %w", err)
+	}
+
+	db, err := sql.Open("duckdb", absPath)
+	if err != nil {
+		return false, fmt.Errorf("failed to open database: %w", err)
+	}
+	defer db.Close()
+
+	var exists bool
+	query := `
+		SELECT COUNT(*) > 0
+		FROM information_schema.tables
+		WHERE table_name = ?
+	`
+	err = db.QueryRow(query, tableName).Scan(&exists)
+	if err != nil {
+		return false, fmt.Errorf("failed to check table existence: %w", err)
+	}
+
+	return exists, nil
+}
+
+// GetTableSchema returns the schema of a table
+func GetTableSchema(dbPath, tableName string) ([]Column, error) {
+	absPath, err := filepath.Abs(dbPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to resolve absolute path: %w", err)
+	}
+
+	db, err := sql.Open("duckdb", absPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database: %w", err)
+	}
+	defer db.Close()
+
+	query := `
+		SELECT column_name, data_type
+		FROM information_schema.columns
+		WHERE table_name = ?
+		ORDER BY ordinal_position
+	`
+	rows, err := db.Query(query, tableName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query table schema: %w", err)
+	}
+	defer rows.Close()
+
+	var columns []Column
+	for rows.Next() {
+		var col Column
+		if err := rows.Scan(&col.Name, &col.Type); err != nil {
+			return nil, fmt.Errorf("failed to scan column info: %w", err)
+		}
+		columns = append(columns, col)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %w", err)
+	}
+
+	return columns, nil
+}

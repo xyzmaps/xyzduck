@@ -74,6 +74,41 @@ The `init` command:
 - Loads the spatial extension for immediate use
 - Is idempotent - safe to run multiple times on the same database
 
+### Load GeoJSON Data
+
+Load GeoJSON files into your DuckDB database with automatic schema inference:
+
+```bash
+# Load GeoJSON with auto-generated table name (from filename)
+xyzduck load cities.geojson --db geodata.duckdb
+# Creates table: cities
+
+# Load with custom table name
+xyzduck load cities.geojson --db geodata.duckdb --table locations
+
+# Append to existing table
+xyzduck load more-cities.geojson --db geodata.duckdb --table cities
+```
+
+The `load` command:
+- Automatically infers table schema from GeoJSON properties
+- Derives table name from filename (or use `--table` flag)
+- Converts GeoJSON geometries to DuckDB GEOMETRY type
+- Appends to existing tables if they already exist
+- Smart type detection (VARCHAR, BIGINT, DOUBLE, BOOLEAN)
+
+Example with sample data:
+```bash
+# Initialize database
+xyzduck init geodata
+
+# Load cities from examples directory
+xyzduck load examples/cities.geojson --db geodata
+
+# Load additional points of interest
+xyzduck load examples/parks.geojson --db geodata
+```
+
 ### Update xyzduck
 
 Keep xyzduck up to date with the latest release:
@@ -103,6 +138,7 @@ xyzduck --help
 
 # Command-specific help
 xyzduck init --help
+xyzduck load --help
 xyzduck update --help
 ```
 
@@ -114,25 +150,54 @@ The spatial extension provides geospatial functionality including:
 - Coordinate reference system transformations
 - GeoJSON and WKT support
 
-Example usage (for now with DuckDB CLI, this will be available in the xyzduck CLI soon):
+Example usage with DuckDB CLI after loading data:
 ```sql
--- After running: xyzduck init geodata
-
--- Create a table with spatial data
-CREATE TABLE locations (
-    id INTEGER,
-    name VARCHAR,
-    geom GEOMETRY
-);
-
--- Insert spatial data
-INSERT INTO locations VALUES
-    (1, 'Point A', ST_Point(0, 0)),
-    (2, 'Point B', ST_Point(1, 1));
+-- After running: xyzduck init geodata && xyzduck load cities.geojson --db geodata
 
 -- Query spatial data
-SELECT name, ST_AsText(geom) FROM locations;
+SELECT name, ST_AsText(geom) as location FROM cities;
+
+-- Calculate distance between cities (in degrees)
+SELECT
+    a.name as city1,
+    b.name as city2,
+    ST_Distance(a.geom, b.geom) as distance
+FROM cities a, cities b
+WHERE a.name < b.name;
+
+-- Find cities within a bounding box
+SELECT name, population
+FROM cities
+WHERE ST_Within(
+    geom,
+    ST_MakeEnvelope(-125, 32, -115, 42)  -- West Coast USA
+);
+
+-- Create a buffer around a city
+SELECT
+    name,
+    ST_AsText(ST_Buffer(geom, 0.5)) as buffer_geom
+FROM cities
+WHERE name = 'San Francisco';
 ```
+
+## Example Data
+
+The `examples/` directory contains sample GeoJSON files to help you get started:
+
+- **cities.geojson** - Major world cities (Point features)
+- **parks.geojson** - Urban parks (Polygon features)
+- **routes.geojson** - Transportation routes (LineString features)
+
+Try them out:
+```bash
+xyzduck init geodata
+xyzduck load examples/cities.geojson --db geodata
+xyzduck load examples/parks.geojson --db geodata
+xyzduck load examples/routes.geojson --db geodata
+```
+
+See [examples/README.md](examples/README.md) for sample queries and more details.
 
 ## Supported Platforms
 
