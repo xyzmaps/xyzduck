@@ -48,11 +48,25 @@ builds:
         env:
           - CC=zig cc -target x86_64-macos
           - CXX=zig c++ -target x86_64-macos -lc++
+          - CGO_LDFLAGS=-s
+        ldflags:
+          - -s
+          - -X org.xyzmaps.xyzduck/src/version.Version={{.Version}}
+          - -X org.xyzmaps.xyzduck/src/version.Commit={{.Commit}}
+          - -X org.xyzmaps.xyzduck/src/version.Date={{.Date}}
+          - -extldflags "-static-libgcc -static-libstdc++"
       - goos: darwin
         goarch: arm64
         env:
           - CC=zig cc -target aarch64-macos
           - CXX=zig c++ -target aarch64-macos -lc++
+          - CGO_LDFLAGS=-s
+        ldflags:
+          - -s
+          - -X org.xyzmaps.xyzduck/src/version.Version={{.Version}}
+          - -X org.xyzmaps.xyzduck/src/version.Commit={{.Commit}}
+          - -X org.xyzmaps.xyzduck/src/version.Date={{.Date}}
+          - -extldflags "-static-libgcc -static-libstdc++"
 
 archives:
   - formats: [tar.gz]
