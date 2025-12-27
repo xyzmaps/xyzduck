@@ -55,6 +55,6 @@ goreleaser check
 The project is currently minimal with:
 - `main.go`: Entry point containing the main function
 - `src/`: Directory for future source code organization (currently empty)
-- `.goreleaser.yaml`: GoReleaser configuration for cross-platform builds with CGO disabled
+- `.goreleaser.yaml`: GoReleaser configuration for cross-platform builds with CGO enabled
 
 Future code should be organized in the `src/` directory with proper package structure as the project grows.
