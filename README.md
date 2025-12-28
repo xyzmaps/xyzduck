@@ -138,8 +138,7 @@ SELECT name, ST_AsText(geom) FROM locations;
 
 - Linux (amd64, arm64)
 - macOS / Darwin (amd64, arm64)
-
-**Note**: Windows is not currently supported due to CGO requirements.
+- Windows (amd64 only, unfortunately duckdb-go doesn't support arm64 yet)
 
 ## Development
 
