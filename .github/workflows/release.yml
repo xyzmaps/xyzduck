@@ -27,9 +27,7 @@ jobs:
           - goos: windows
             goarch: amd64
             runs-on: windows-latest
-          - goos: windows
-            goarch: arm64
-            runs-on: windows-11-arm
+            
     steps:
       - name: Checkout
         uses: actions/checkout@v4
