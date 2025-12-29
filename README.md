@@ -53,6 +53,31 @@ cd xyzduck
 go build -o xyzduck main.go
 ```
 
+## macOS: Unblocking the unsigned `xyzduck` CLI executable
+
+If you downloaded a prebuilt `xyzduck` binary and macOS prevents it from running because it is unsigned, you can use one of the methods below to allow it to run. Always verify the binary's integrity and that you trust the source before removing security controls.
+
+Recommended steps (safe and minimal)
+1. Make the binary executable (if it isn't already):
+   ```bash
+   chmod +x /path/to/xyzduck
+   ```
+2. Remove the quarantine attribute that Gatekeeper sets when a file is downloaded:
+   ```bash
+   xattr -d com.apple.quarantine /path/to/xyzduck
+   ```
+   If you need to remove the quarantine attribute recursively on a directory:
+   ```bash
+   xattr -r -d com.apple.quarantine /path/to/directory
+   ```
+3. Move the binary into a standard location (optional):
+   ```bash
+   sudo mv /path/to/xyzduck /usr/local/bin/xyzduck
+   ```
+
+Alternative (GUI) — allow once via Finder
+- In Finder, right-click (or Control-click) the `xyzduck` file and choose "Open". macOS will show a warning; click "Open" to allow it to run this one time. This creates a one-time exception in Gatekeeper.
+
 ## Usage
 
 ### Initialize a Database
