@@ -53,6 +53,58 @@ cd xyzduck
 go build -o xyzduck main.go
 ```
 
+## macOS: Unblocking the unsigned `xyzduck` CLI executable
+
+If you downloaded a prebuilt `xyzduck` binary and macOS prevents it from running because it is unsigned, you can use one of the methods below to allow it to run. Always verify the binary's integrity and that you trust the source before removing security controls.
+
+Recommended steps (safe and minimal)
+1. Make the binary executable (if it isn't already):
+   ```bash
+   chmod +x /path/to/xyzduck
+   ```
+2. Remove the quarantine attribute that Gatekeeper sets when a file is downloaded:
+   ```bash
+   xattr -d com.apple.quarantine /path/to/xyzduck
+   ```
+   If you need to remove the quarantine attribute recursively on a directory:
+   ```bash
+   xattr -r -d com.apple.quarantine /path/to/directory
+   ```
+3. Move the binary into a standard location (optional):
+   ```bash
+   sudo mv /path/to/xyzduck /usr/local/bin/xyzduck
+   ```
+
+Alternative (GUI) — allow once via Finder
+- In Finder, right-click (or Control-click) the `xyzduck` file and choose "Open". macOS will show a warning; click "Open" to allow it to run this one time. This creates a one-time exception in Gatekeeper.
+
+Alternative (spctl) — add an exception label
+- You can add the binary to the spctl assessment database (requires sudo):
+  ```bash
+  sudo spctl --add --label "xyzduck-unsigned" /path/to/xyzduck
+  sudo spctl --enable --label "xyzduck-unsigned"
+  ```
+  Note: This configures a local exception; prefer the xattr method for single binaries.
+
+Not recommended
+- Disabling Gatekeeper globally:
+  ```bash
+  sudo spctl --master-disable
+  ```
+  This turns off Gatekeeper system-wide and is not recommended.
+
+Verifying the binary
+- Before unblocking, verify the checksum (if a release checksum is published):
+  ```bash
+  shasum -a 256 /path/to/xyzduck
+  ```
+  Compare the output to the checksum published on the release page or another trusted source.
+
+Notes and caveats
+- These instructions are for macOS Gatekeeper behavior (macOS Catalina and later). UI wording may vary by macOS version.
+- Removing the quarantine attribute or adding an exception reduces protections for that file. Only unblock binaries you obtained from a trusted source.
+- If you installed `xyzduck` via Homebrew or another package manager, prefer the package manager approach (e.g., `brew install xyzduck`) which avoids Gatekeeper issues.
+
 ## Usage
 
 ### Initialize a Database
