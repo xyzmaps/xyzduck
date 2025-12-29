@@ -1,0 +1,83 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.4194, 37.7749]
+      },
+      "properties": {
+        "name": "San Francisco",
+        "population": 883305,
+        "country": "USA",
+        "state": "California"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-118.2437, 34.0522]
+      },
+      "properties": {
+        "name": "Los Angeles",
+        "population": 3979576,
+        "country": "USA",
+        "state": "California"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-73.9352, 40.7306]
+      },
+      "properties": {
+        "name": "Brooklyn",
+        "population": 2736074,
+        "country": "USA",
+        "state": "New York"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.3522, 48.8566]
+      },
+      "properties": {
+        "name": "Paris",
+        "population": 2161000,
+        "country": "France",
+        "state": "Île-de-France"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [139.6917, 35.6895]
+      },
+      "properties": {
+        "name": "Tokyo",
+        "population": 13960000,
+        "country": "Japan",
+        "state": "Tokyo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.1276, 51.5074]
+      },
+      "properties": {
+        "name": "London",
+        "population": 9002488,
+        "country": "United Kingdom",
+        "state": "England"
+      }
+    }
+  ]
+}
