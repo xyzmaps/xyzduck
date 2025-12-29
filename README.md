@@ -78,33 +78,6 @@ Recommended steps (safe and minimal)
 Alternative (GUI) — allow once via Finder
 - In Finder, right-click (or Control-click) the `xyzduck` file and choose "Open". macOS will show a warning; click "Open" to allow it to run this one time. This creates a one-time exception in Gatekeeper.
 
-Alternative (spctl) — add an exception label
-- You can add the binary to the spctl assessment database (requires sudo):
-  ```bash
-  sudo spctl --add --label "xyzduck-unsigned" /path/to/xyzduck
-  sudo spctl --enable --label "xyzduck-unsigned"
-  ```
-  Note: This configures a local exception; prefer the xattr method for single binaries.
-
-Not recommended
-- Disabling Gatekeeper globally:
-  ```bash
-  sudo spctl --master-disable
-  ```
-  This turns off Gatekeeper system-wide and is not recommended.
-
-Verifying the binary
-- Before unblocking, verify the checksum (if a release checksum is published):
-  ```bash
-  shasum -a 256 /path/to/xyzduck
-  ```
-  Compare the output to the checksum published on the release page or other trusted source.
-
-Notes and caveats
-- These instructions are for macOS Gatekeeper behavior (macOS Catalina and later). UI wording may vary by macOS version.
-- Removing the quarantine attribute or adding an exception reduces protections for that file. Only unblock binaries you obtained from a trusted source.
-- If you installed `xyzduck` via Homebrew or another package manager, prefer the package manager approach (e.g., `brew install xyzduck`) which avoids Gatekeeper issues.
-
 ## Usage
 
 ### Initialize a Database
